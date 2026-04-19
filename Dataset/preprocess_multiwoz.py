@@ -1,16 +1,31 @@
 import json
 import os
+import tiktoken
+
+enc = tiktoken.get_encoding("cl100k_base")
 
 BASE_DIR = "/Users/reeseliu/Desktop/Linear attention/multiwoz/data/MultiWOZ_2.2"
 SPLITS = ["train", "dev", "test"]
-
 OUTPUT_BASE = "multiwoz_outputs"
 os.makedirs(OUTPUT_BASE, exist_ok=True)
 
+def get_turn_range(n):
+    if n <= 10:
+        return "1-10"
+    elif n <= 15:
+        return "10-15"
+    elif n <= 20:
+        return "15-20"
+    elif n <= 25:
+        return "20-25"
+    else:
+        return "25+"
+
 def convert_dialogue(dialog):
     lines = []
+    turns = dialog.get("turns", [])
 
-    for turn in dialog.get("turns", []):
+    for turn in turns:
         speaker = turn.get("speaker", "").strip().upper()
         utterance = turn.get("utterance", "").strip()
 
@@ -26,10 +41,26 @@ def convert_dialogue(dialog):
 
         lines.append(f"[{role}] {utterance}")
 
-    if len(lines) < 4:
-        return None
+    num_valid_turns = len(lines)
 
-    return "\n".join(lines)
+    if num_valid_turns < 4:
+        return None, None
+
+    dialogue_text = "\n".join(lines)
+    num_tokens = len(enc.encode(dialogue_text))
+    turn_range = get_turn_range(num_valid_turns)
+
+    result = {
+        "dialogue": dialogue_text
+    }
+
+    meta = {
+        "num_turns": num_valid_turns,
+        "turn_range": turn_range,
+        "num_tokens": num_tokens
+    }
+
+    return result, meta
 
 for split in SPLITS:
     print(f"\n===== Processing {split.upper()} =====")
@@ -64,19 +95,20 @@ for split in SPLITS:
 
         with open(output_path, "w", encoding="utf-8") as out:
             for dialog in dialogues_iter:
-                d = convert_dialogue(dialog)
-                if d:
-                    out.write(
-                        json.dumps({"dialogue": d}, ensure_ascii=False) + "\n"
-                    )
-                    count += 1
-                    total_count += 1
+                result, meta = convert_dialogue(dialog)
+                if result is None:
+                    continue
 
-                    if not sample_printed:
-                        print("\n=== SAMPLE ===")
-                        print(d)
-                        print("==============\n")
-                        sample_printed = True
+                out.write(json.dumps(result, ensure_ascii=False) + "\n")
+
+                count += 1
+                total_count += 1
+                if not sample_printed:
+                    print(f"\nTurns: {meta['num_turns']}")
+                    print(f"Turn range: {meta['turn_range']}")
+                    print(f"Tokens: {meta['num_tokens']}")
+                    print("==============\n")
+                    sample_printed = True
 
         print(f"Saved {count} → {output_path}")
 
