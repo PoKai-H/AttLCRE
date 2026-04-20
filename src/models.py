@@ -5,7 +5,7 @@ import torch.nn as nn
 from transformers import (
     BertForSequenceClassification,
     BertTokenizer,
-    LongformerForSequenceClassfication,
+    LongformerForSequenceClassification,
     LongformerTokenizer
 )
 
@@ -34,7 +34,7 @@ def build_model_and_tokenizer(model_name: str):
 
     elif model_name == "longformer":
         tokenizer = LongformerTokenizer.from_predtrained("allenai/longformer-base-4096")
-        model = LongformerForSequenceClassfication.from_pretrained(
+        model = LongformerForSequenceClassification.from_pretrained(
             "allenai/longformer-base-4096",
             num_labels = 2
         )

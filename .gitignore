@@ -1,2 +1,4 @@
 .DS_Store
 *.pyc
+new_data/
+outputs/
