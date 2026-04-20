@@ -32,7 +32,7 @@ def render_for_ranking(
 
     rows: list[dict[str, Any]] = []
 
-    for candidate_index, candidate_text in enumerate(sample["candidate"]):
+    for candidate_index, candidate_text in enumerate(sample["candidates"]):
         rows.append(
             {
                 "sample_id": sample["sample_id"],
@@ -40,7 +40,7 @@ def render_for_ranking(
                 "candidate": candidate_text,
                 "label": 1 if candidate_index == correct_index else 0,
                 "candidate_index": candidate_index,
-                "gold_idnex": correct_index,
+                "gold_index": correct_index,
                 "metadata": sample.get("metadata", {})
             }
         )
