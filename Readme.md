@@ -7,7 +7,7 @@ new_data2/test.json
 # Training
 
 ```bash
-python run.py --model bert
+python run.py --model bert 
 ```
 
 # Testing Only

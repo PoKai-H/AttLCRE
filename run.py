@@ -37,7 +37,7 @@ def save_json(path: str, data) -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer", "small_transformer"])
+    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer"])
     parser.add_argument("--train_path", type=str, default="new_data2/train.json")
     parser.add_argument("--val_path", type=str, default="new_data2/val.json")
     parser.add_argument("--test_path", type=str, default="new_data2/test.json")
