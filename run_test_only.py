@@ -34,7 +34,18 @@ def main():
     parser.add_argument("--checkpoint_path", type=str, required=True)
     parser.add_argument("--output_dir", type=str, default="outputs_test_only")
     parser.add_argument("--eval_batch_size", type=int, default=16)
+
+    # render-related args
     parser.add_argument("--include_roles", action="store_true")
+    parser.add_argument("--include_speaker", action="store_true")
+    parser.add_argument(
+        "--render_mode",
+        type=str,
+        default="full",
+        choices=["full", "candidate_only", "local_only"],
+    )
+    parser.add_argument("--local_k", type=int, default=3)
+
     args = parser.parse_args()
 
     if torch.cuda.is_available():
@@ -51,7 +62,13 @@ def main():
     test_samples = load_json(args.test_path)
 
     print("Rendering rows...")
-    test_rows = build_rows(test_samples, include_roles=args.include_roles)
+    test_rows = build_rows(
+        test_samples,
+        include_speaker=args.include_speaker,
+        include_roles=args.include_roles,
+        render_mode=args.render_mode,
+        local_k=args.local_k,
+    )
 
     print("Building model and tokenizer...")
     model, tokenizer, max_length = build_model_and_tokenizer(args.model)

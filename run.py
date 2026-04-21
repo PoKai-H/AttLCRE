@@ -38,10 +38,10 @@ def save_json(path: str, data) -> None:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer", "small_transformer"])
-    parser.add_argument("--train_path", type=str, default="data/train.json")
-    parser.add_argument("--val_path", type=str, default="data/val.json")
-    parser.add_argument("--test_path", type=str, default="data/test.json")
-    parser.add_argument("--output_dir", type=str, default="outputs")
+    parser.add_argument("--train_path", type=str, default="new_data2/train.json")
+    parser.add_argument("--val_path", type=str, default="new_data2/val.json")
+    parser.add_argument("--test_path", type=str, default="new_data2/test.json")
+    parser.add_argument("--output_dir", type=str, default="new_data2/outputs")
     parser.add_argument("--train_batch_size", type=int, default=8)
     parser.add_argument("--eval_batch_size", type=int, default=16)
     parser.add_argument("--num_epochs", type=int, default=3)
@@ -50,6 +50,10 @@ def main():
     parser.add_argument("--warmup_ratio", type=float, default=0.1)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--include_roles", action="store_true")
+    parser.add_argument("--include_speaker", action="store_true")
+    parser.add_argument("--render_mode", type=str, default="full",
+                    choices=["full", "candidate_only", "local_only"])
+    parser.add_argument("--local_k", type=int, default=3)
     args = parser.parse_args()
 
     set_seed(args.seed)
@@ -69,9 +73,27 @@ def main():
     test_samples = load_json(args.test_path)
 
     print("Rendering rows...")
-    train_rows = build_rows(train_samples, include_roles=args.include_roles)
-    val_rows = build_rows(val_samples, include_roles=args.include_roles)
-    test_rows = build_rows(test_samples, include_roles=args.include_roles)
+    train_rows = build_rows(
+        train_samples,
+        include_speaker=args.include_speaker,
+        include_roles=args.include_roles,
+        render_mode=args.render_mode,
+        local_k=args.local_k,
+    )
+    val_rows = build_rows(
+        val_samples,
+        include_speaker=args.include_speaker,
+        include_roles=args.include_roles,
+        render_mode=args.render_mode,
+        local_k=args.local_k,
+    )
+    test_rows = build_rows(
+        test_samples,
+        include_speaker=args.include_speaker,
+        include_roles=args.include_roles,
+        render_mode=args.render_mode,
+        local_k=args.local_k,
+    )
 
     model, tokenizer, max_length = build_model_and_tokenizer(args.model)
     model.to(device)
