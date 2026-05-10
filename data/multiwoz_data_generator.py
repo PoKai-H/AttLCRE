@@ -12,21 +12,20 @@ ALLOWED_DOMAINS = {"hotel", "restaurant", "train"}
 random.seed(42)
 os.makedirs(OUTPUT_BASE, exist_ok=True)
 
-
-DOMAIN_SLOT_SCHEMA = {
-    "restaurant": {
-        "categorical": ["pricerange", "area", "bookday", "bookpeople"],
-        "non_categorical": ["food", "name", "booktime", "address", "phone", "postcode", "ref"],
-    },
-    "hotel": {
-        "categorical": ["pricerange", "parking", "internet", "stars", "area", "type", "bookpeople", "bookday", "bookstay"],
-        "non_categorical": ["name", "address", "phone", "postcode", "ref"],
-    },
-    "train": {
-        "categorical": ["destination", "departure", "day", "bookpeople"],
-        "non_categorical": ["arriveby", "leaveat", "trainid", "ref", "price", "duration"],
-    },
-}
+# DOMAIN_SLOT_SCHEMA = {
+#     "restaurant": {
+#         "categorical": ["pricerange", "area", "bookday", "bookpeople"],
+#         "non_categorical": ["food", "name", "booktime", "address", "phone", "postcode", "ref"],
+#     },
+#     "hotel": {
+#         "categorical": ["pricerange", "parking", "internet", "stars", "area", "type", "bookpeople", "bookday", "bookstay"],
+#         "non_categorical": ["name", "address", "phone", "postcode", "ref"],
+#     },
+#     "train": {
+#         "categorical": ["destination", "departure", "day", "bookpeople"],
+#         "non_categorical": ["arriveby", "leaveat", "trainid", "ref", "price", "duration"],
+#     },
+# }
 
 WRONG_VALUE_BANK = {
     "restaurant": {
@@ -63,169 +62,9 @@ QUERYABLE_SLOTS = {
     "train": {"destination", "departure", "day", "bookpeople", "arriveby", "leaveat"},
 }
 
-def get_domain_from_dialog(dialog):
-
-    found = set()
-
-    services = dialog.get("services", [])
-    for s in services:
-        s = str(s).lower()
-        if s in ALLOWED_DOMAINS:
-            found.add(s)
-
-    domains = dialog.get("domains", [])
-    for d in domains:
-        d = str(d).lower()
-        if d in ALLOWED_DOMAINS:
-            found.add(d)
-
-    frames = dialog.get("frames", [])
-    for fr in frames:
-        service = str(fr.get("service", "")).lower()
-        if service in ALLOWED_DOMAINS:
-            found.add(service)
-
-    dialogue_id = str(dialog.get("dialogue_id", "")).lower()
-    for d in ALLOWED_DOMAINS:
-        if d in dialogue_id:
-            found.add(d)
-
-    if not found:
-        return None
-
-    return random.choice(list(found))
-
-def normalize_value(v):
-    if v is None:
-        return None
-    v = str(v).strip().lower()
-    if v in {"", "not mentioned", "none"}:
-        return None
-    return v
-
-def extract_gold_state(dialog, domain):
-    gold_state = {}
-
-    allowed_slots = set(DOMAIN_SLOT_SCHEMA[domain]["categorical"]) | set(
-        DOMAIN_SLOT_SCHEMA[domain]["non_categorical"])
-
-    frames = dialog.get("frames", [])
-    for fr in frames:
-        service = str(fr.get("service", "")).lower()
-        if service != domain:
-            continue
-
-        state = fr.get("state", {})
-        slot_values = state.get("slot_values", {})
-
-        if not isinstance(slot_values, dict):
-            continue
-
-        for slot, values in slot_values.items():
-            short_slot = slot.split("-")[-1].lower()
-
-            if short_slot not in allowed_slots:
-                continue
-
-            if isinstance(values, list) and values:
-                value = normalize_value(values[0])
-            else:
-                value = normalize_value(values)
-
-            if value is not None:
-                gold_state[short_slot] = value
-
-    return gold_state
-
-def generate_sample(dialog: dict, num_distractors=3, sample_id=None):
-    if sample_id is None:
-        sample_id = f"ex_{uuid.uuid4().hex[:6]}"
-
-    domain = get_domain_from_dialog(dialog)
-    if domain not in ALLOWED_DOMAINS:
-        return None
-
-    gold_state = extract_gold_state(dialog, domain)
-    if not gold_state:
-        return None
-
-    candidate_slots = list(gold_state.keys())
-    if len(candidate_slots) < 2:
-        return None
-
-    k = min(len(candidate_slots), random.choice([2, 3]))
-    selected_slot_names = random.sample(candidate_slots, k=k)
-
-    full_values = deepcopy(gold_state)
-
-    true_slots = {
-        slot: full_values[slot]
-        for slot in selected_slot_names
-    }
-
-    wrong_slots = {}
-    for slot in selected_slot_names:
-        bank = WRONG_VALUE_BANK.get(domain, {}).get(slot, [])
-        gold_value = str(true_slots[slot]).lower()
-
-        filtered = [v for v in bank if str(v).lower() != gold_value]
-        if filtered:
-            wrong_slots[slot] = filtered
-
-    if not wrong_slots:
-        return None
-
-    query = generate_query(domain)
-    signal_blocks = generate_signal_pairs(domain, true_slots)
-
-    distractor_blocks = generate_distractor_pairs(
-        domain=domain,
-        full_values=full_values,
-        wrong_slots=wrong_slots,
-        true_slots=true_slots,
-        num_distractors=num_distractors,
-    )
-
-    candidates, correct_index = build_candidates(
-        domain=domain,
-        full_values=full_values,
-        true_slots=true_slots,
-        wrong_slots=wrong_slots,
-        num_candidates=4,
-    )
-
-    all_blocks = signal_blocks + distractor_blocks
-    random.shuffle(all_blocks)
-
-    dialogue = []
-    for block in all_blocks:
-        dialogue.extend(block)
-
-    dialogue.append({
-        "speaker": "A",
-        "text": query,
-        "role": "query",
-    })
-
-    return {
-        "sample_id": sample_id,
-        "domain": domain,
-        "full_values": full_values,
-        "true_slots": true_slots,
-        "wrong_slots": wrong_slots,
-        "signal_blocks": signal_blocks,
-        "distractor_blocks": distractor_blocks,
-        "dialogue": dialogue,
-        "query": query,
-        "candidates": candidates,
-        "answer_idx": correct_index,
-    }
-
-
-
 QUERY_BANK = {
     "restaurant": [
-        "Which restaurant should I choose?",
+        "Which option matches what I mentioned earlier?",
         "Which restaurant best fits my needs?",
         "Which one matches what I asked for earlier?",
         "Given what I said before, which restaurant is best?",
@@ -244,6 +83,340 @@ QUERY_BANK = {
     ],
 }
 
+def get_wrong_values_for_slot(domain: str, slot: str, true_value: str) -> list[str]:
+    candidates = WRONG_VALUE_BANK.get(domain, {}).get(slot, [])
+    true_value = normalize_value(true_value)
+
+    wrong_values = []
+    for v in candidates:
+        nv = normalize_value(v)
+        if nv is not None and nv != true_value:
+            wrong_values.append(nv)
+
+    return wrong_values
+
+def sample_noise_from_dialog(dialog, k=3):
+    turns = dialog.get("turns", [])
+    blocks = []
+
+    for turn in turns:
+        if not isinstance(turn, dict):
+            continue
+
+        text = str(turn.get("utterance", "")).strip()
+        if not text:
+            continue
+
+        speaker_raw = str(turn.get("speaker", "")).upper()
+        speaker = "A" if speaker_raw == "USER" else "B"
+
+        frames = turn.get("frames", [])
+        has_state = False
+
+        if isinstance(frames, list):
+            for fr in frames:
+                if not isinstance(fr, dict):
+                    continue
+                state = fr.get("state", {})
+                if isinstance(state, dict) and state.get("slot_values"):
+                    has_state = True
+                    break
+
+        if has_state:
+            continue
+
+        blocks.append([
+            {
+                "speaker": speaker,
+                "text": text,
+                "role": "noise"
+            }
+        ])
+
+    random.shuffle(blocks)
+    return blocks[:k]
+
+#determines the domain of a dialogue.
+def get_domain_from_dialog(dialog):
+    services = dialog.get("services", [])
+    found = [str(s).lower() for s in services if str(s).lower() in ALLOWED_DOMAINS]
+
+    if found:
+        return random.choice(found) #If valid domains are found, randomly return one.
+
+    turns = dialog.get("turns", [])
+    for turn in turns:
+        if not isinstance(turn, dict):
+            continue
+        frames = turn.get("frames", [])
+        for fr in frames:
+            service = str(fr.get("service", "")).lower()
+            if service in ALLOWED_DOMAINS:
+                return service
+
+    # dialogue_id = str(dialog.get("dialogue_id", "")).lower()
+    # for d in ALLOWED_DOMAINS:
+    #     if d in dialogue_id:
+    #         return d
+
+    return None
+
+#normalizes a slot value
+def normalize_value(v):
+    if v is None:
+        return None
+    v = str(v).strip().lower()
+    if v in {"", "not mentioned", "none"}:
+        return None
+    return v
+
+def extract_gold_state(dialog, domain):
+    gold_state = {}
+    allowed_slots = QUERYABLE_SLOTS[domain]
+
+    turns = dialog.get("turns", [])
+    for turn in turns:
+        if not isinstance(turn, dict):
+            continue
+
+        frames = turn.get("frames", [])
+        if not isinstance(frames, list):
+            continue
+
+        for fr in frames:
+            service = str(fr.get("service", "")).lower()
+            if service != domain:
+                continue
+
+            state = fr.get("state", {})
+            if not isinstance(state, dict):
+                continue
+
+            slot_values = state.get("slot_values", {})
+            if not isinstance(slot_values, dict):
+                continue
+
+            for slot, values in slot_values.items():
+                short_slot = slot.split("-")[-1].lower()
+
+                if short_slot not in allowed_slots:
+                    continue
+
+                if isinstance(values, list) and values:
+                    value = normalize_value(values[0])
+                else:
+                    value = normalize_value(values)
+
+                if value is not None:
+                    gold_state[short_slot] = value
+
+    return gold_state
+
+def arrange_blocks_with_random_distance(
+    signal_blocks,
+    noise_blocks,
+    distractor_blocks,
+    query_context_turn,
+    query_turn,
+    min_distance=3,
+    max_distance=10
+):
+    dialogue_blocks = []
+
+    chosen_signal = random.choice(signal_blocks)
+    remaining_signals = [b for b in signal_blocks if b != chosen_signal]
+
+    target_distance = random.randint(min_distance, max_distance)
+
+    filler_pool = noise_blocks + distractor_blocks + remaining_signals
+    random.shuffle(filler_pool)
+
+    actual_fillers = filler_pool[:target_distance]
+
+    prefix_pool = filler_pool[target_distance:]
+    random.shuffle(prefix_pool)
+    prefix = prefix_pool[:random.randint(0, 3)]
+
+    dialogue_blocks.extend(prefix)
+    dialogue_blocks.append(chosen_signal)
+    dialogue_blocks.extend(actual_fillers)
+    dialogue_blocks.append([query_context_turn])
+    dialogue_blocks.append([query_turn])
+
+    return dialogue_blocks
+
+def generate_sample(
+    dialog: dict,
+    sample_id: str,
+    num_distractors: int = 3,
+    difficulty: str | None = None,
+    debug: bool = False,
+):
+    domain = get_domain_from_dialog(dialog)
+    if domain not in ALLOWED_DOMAINS:
+        if debug:
+            print(f"[skip:{sample_id}] invalid domain -> {domain}")
+        return None
+
+    gold_state = extract_gold_state(dialog, domain)
+    if not gold_state:
+        if debug:
+            print(f"[skip:{sample_id}] empty gold_state, domain={domain}")
+            print("dialogue_id =", dialog.get("dialogue_id"))
+            print("top keys =", list(dialog.keys()))
+            turns = dialog.get("turns", [])
+            if turns:
+                print("frames sample =", turns[0].get("frames", []))
+        return None
+
+    full_values = deepcopy(gold_state)
+
+    candidate_slots = list(gold_state.keys())
+    if not candidate_slots:
+        return None
+
+    if difficulty == "easy":
+        n_true = min(len(candidate_slots), random.choice([1, 2]))
+    elif difficulty == "medium":
+        n_true = min(len(candidate_slots), random.choice([2, 2, 3]))
+    else:  # hard
+        n_true = min(len(candidate_slots), random.choice([2, 3, 3]))
+
+    chosen_slots = random.sample(candidate_slots, k=n_true)
+    true_slots = {slot: gold_state[slot] for slot in chosen_slots}
+
+    wrong_slots = {}
+    for slot, value in true_slots.items():
+        wrong_values = get_wrong_values_for_slot(domain, slot, value)
+        if wrong_values:
+            wrong_slots[slot] = wrong_values
+
+    if not wrong_slots:
+        if debug:
+            print(f"[skip:{sample_id}] no wrong_slots")
+        return None
+
+    if difficulty is None:
+        if num_distractors <= 1:
+            difficulty = "easy"
+        elif num_distractors <= 3:
+            difficulty = "medium"
+        else:
+            difficulty = "hard"
+
+    if difficulty == "easy":
+        target_num_distractors = min(num_distractors, 1)
+        noise_blocks = sample_noise_from_dialog(dialog, k=1)
+        candidate_max_changed_slots = max(1, min(2, len(true_slots)))
+    elif difficulty == "medium":
+        target_num_distractors = max(2, num_distractors)
+        noise_blocks = sample_noise_from_dialog(dialog, k=3)
+        candidate_max_changed_slots = max(1, min(2, len(true_slots)))
+    else:  # hard
+        target_num_distractors = max(4, num_distractors)
+        noise_blocks = sample_noise_from_dialog(dialog, k=6)
+        candidate_max_changed_slots = min(3, len(true_slots))
+
+    signal_blocks = generate_signal_pairs(domain, true_slots, difficulty)
+
+    distractor_blocks = generate_distractor_pairs(
+        domain=domain,
+        full_values=full_values,
+        wrong_slots=wrong_slots,
+        true_slots=true_slots,
+        num_distractors=target_num_distractors,
+        difficulty=difficulty,
+    )
+
+    query_text = generate_query(domain)
+
+    query_context_turn = {
+        "speaker": "B",
+        "text": "Let me compare the options based on what you mentioned earlier.",
+        "role": "query_context",
+    }
+
+    query_turn = {
+        "speaker": "A",
+        "text": query_text,
+        "role": "query",
+    }
+
+    if difficulty == "easy":
+        dialogue_blocks = arrange_blocks_with_random_distance(
+            signal_blocks,
+            noise_blocks,
+            distractor_blocks,
+            query_context_turn,
+            query_turn,
+            min_distance=1,
+            max_distance=3
+        )
+
+    elif difficulty == "medium":
+        dialogue_blocks = arrange_blocks_with_random_distance(
+            signal_blocks,
+            noise_blocks,
+            distractor_blocks,
+            query_context_turn,
+            query_turn,
+            min_distance=3,
+            max_distance=6
+        )
+
+    else:  # hard
+        dialogue_blocks = arrange_blocks_with_random_distance(
+            signal_blocks,
+            noise_blocks,
+            distractor_blocks,
+            query_context_turn,
+            query_turn,
+            min_distance=6,
+            max_distance=12
+        )
+
+    final_dialogue = []
+    for block in dialogue_blocks:
+        final_dialogue.extend(block)
+
+    candidate_texts, correct_index = build_candidates(
+        domain=domain,
+        full_values=full_values,
+        true_slots=true_slots,
+        wrong_slots=wrong_slots,
+        num_candidates=4,
+        max_changed_slots=candidate_max_changed_slots,
+        difficulty=difficulty,
+    )
+    if not candidate_texts or correct_index < 0:
+        if debug:
+            print(f"[skip:{sample_id}] failed to build unique candidates")
+        return None
+
+    signal_positions = [i for i, turn in enumerate(final_dialogue) if turn.get("role") == "signal"]
+    query_positions = [i for i, turn in enumerate(final_dialogue) if turn.get("role") == "query"]
+
+    if signal_positions and query_positions:
+        signal_query_distance = query_positions[0] - max(signal_positions)
+    else:
+        signal_query_distance = None
+
+    sample = {
+        "sample_id": sample_id,
+        "dialogue_id": dialog.get("dialogue_id"),
+        "domain": domain,
+        "difficulty": difficulty,
+        "has_distractor": len(distractor_blocks) > 0,
+        "num_distractors": len(distractor_blocks),
+        "signal_query_distance": signal_query_distance,
+        "true_slots": true_slots,
+        "candidates": candidate_texts,
+        "correct_index": correct_index,
+        "dialogue": final_dialogue,
+    }
+
+    return sample
+
 def generate_query(domain: str) -> str:
     if domain in QUERY_BANK:
         return random.choice(QUERY_BANK[domain])
@@ -254,17 +427,27 @@ def generate_query(domain: str) -> str:
         "Given what I said before, which option is best?",
     ])
 
-def generate_signal_pairs(domain: str, true_slots: dict[str, str]) -> list[list[dict]]:
+#turn each important constraint in true_slots into a dialogue block.
+def generate_signal_pairs(
+    domain: str,
+    true_slots: dict[str, str],
+    difficulty: str = "medium",
+) -> list[list[dict]]:
 
     signals = []
 
     for slot, value in true_slots.items():
-        signals.append(render_signal_pair(domain, slot, value))
+        signals.append(render_signal_pair(domain, slot, value, difficulty))
 
     return signals
 
-def render_signal_pair(domain: str, slot: str, value: str) -> list[dict]:
-    level = sample_reply_level()
+def render_signal_pair(
+    domain: str,
+    slot: str,
+    value: str,
+    difficulty: str = "medium",
+) -> list[dict]:
+    level = sample_reply_level(difficulty)
     return [
         {
             "speaker": "A",
@@ -282,6 +465,7 @@ def render_signal_pair(domain: str, slot: str, value: str) -> list[dict]:
         },
     ]
 
+#return the full list of signal blocks
 def render_slot_signal(domain: str, slot: str, value: str) -> str:
 
     templates = {
@@ -517,20 +701,22 @@ def build_distractor_pool(
 
     return pool
 
-def sample_reply_level() -> int:
-    """
-    0 = generic
-    1 = weak confirmation
-    2 = strong confirmation
-    """
-    return random.choice([0, 1, 2])
+def sample_reply_level(difficulty: str = "medium") -> int:
+    if difficulty == "easy":
+        return random.choice([1, 2, 2])
+    elif difficulty == "medium":
+        return random.choice([0, 1, 1])
+    else:  # hard
+        return random.choice([0, 0, 1])
 
+#Generate distractor dialogue pairs
 def generate_distractor_pairs(
     domain: str,
     full_values: dict[str, str],
     wrong_slots: dict[str, list[str]],
     true_slots: dict[str, str],
     num_distractors: int,
+    difficulty: str = "medium",
 ) -> list[list[dict]]:
     pool = build_distractor_pool(domain, full_values, wrong_slots, true_slots)
 
@@ -539,7 +725,7 @@ def generate_distractor_pairs(
 
     blocks = []
     for item in selected:
-        level = sample_reply_level()
+        level = sample_reply_level(difficulty)
         slot = item["slot"]
         value = item["value"]
         dtype = item["distractor_type"]
@@ -566,39 +752,56 @@ def generate_distractor_pairs(
     return blocks
 
 def render_candidate(domain: str, option: dict[str, str]) -> str:
+    intro_templates = [
+        "The best match is",
+        "A suitable option is",
+        "You should choose",
+        "The most suitable choice is",
+    ]
+
+    intro = random.choice(intro_templates)
+
     if domain == "restaurant":
         parts = []
         if "pricerange" in option:
-            parts.append(f"{option['pricerange']} pricing")
+            parts.append(f"a {option['pricerange']} restaurant")
         if "food" in option:
-            parts.append(f"{option['food']} food")
+            parts.append(f"serving {option['food']} food")
         if "area" in option:
             parts.append(f"in the {option['area']}")
         if "bookday" in option:
             parts.append(f"for {option['bookday']}")
         if "booktime" in option:
             parts.append(f"at {option['booktime']}")
+        if "bookpeople" in option:
+            parts.append(f"for {option['bookpeople']} people")
 
         desc = ", ".join(parts)
-        return f"You should choose the restaurant with {desc}."
+        return f"{intro} {desc}."
 
     elif domain == "hotel":
         parts = []
         if "pricerange" in option:
-            parts.append(f"{option['pricerange']} pricing")
+            parts.append(f"a {option['pricerange']} hotel")
         if "stars" in option:
-            parts.append(f"{option['stars']}-star")
+            parts.append(f"with {option['stars']} stars")
         if "area" in option:
             parts.append(f"in the {option['area']}")
         if "parking" in option:
-            parts.append(f"parking {option['parking']}")
+            parts.append(f"parking: {option['parking']}")
         if "internet" in option:
-            parts.append(f"internet {option['internet']}")
+            parts.append(f"internet: {option['internet']}")
         if "type" in option:
-            parts.append(f"type {option['type']}")
+            parts.append(f"type: {option['type']}")
+        if "bookday" in option:
+            parts.append(f"check-in on {option['bookday']}")
+        if "bookstay" in option:
+            parts.append(f"for {option['bookstay']} nights")
+        if "bookpeople" in option:
+            parts.append(f"for {option['bookpeople']} guests")
 
         desc = ", ".join(parts)
-        return f"You should choose the hotel with {desc}."
+        return f"{intro} {desc}."
 
     elif domain == "train":
         parts = []
@@ -612,12 +815,14 @@ def render_candidate(domain: str, option: dict[str, str]) -> str:
             parts.append(f"leaving at {option['leaveat']}")
         if "arriveby" in option:
             parts.append(f"arriving by {option['arriveby']}")
+        if "bookpeople" in option:
+            parts.append(f"for {option['bookpeople']} passengers")
 
         desc = ", ".join(parts)
-        return f"You should choose the train {desc}."
+        return f"{intro} a train {desc}."
 
     else:
-        return f"You should choose the option with constraints: {option}."
+        return f"{intro} an option with constraints: {option}."
 
 def build_candidates(
     domain: str,
@@ -626,35 +831,70 @@ def build_candidates(
     wrong_slots: dict[str, list[str]],
     num_candidates: int = 4,
     max_changed_slots: int | None = None,
+    difficulty: str = "medium",
 ) -> tuple[list[str], int]:
     if max_changed_slots is None:
         max_changed_slots = len(true_slots)
 
     true_option = deepcopy(full_values)
-    candidates = [deepcopy(true_option)]
 
-    query_slot_names = [slot for slot in true_slots if slot in wrong_slots]
+    query_slot_names = [
+        slot for slot in true_slots
+        if slot in wrong_slots and wrong_slots[slot]
+    ]
+
     if not query_slot_names:
-        return [render_candidate(domain, true_option)], 0
+        return [], -1
 
-    while len(candidates) < num_candidates:
+    if difficulty == "easy":
+        min_changed = 1
+        max_changed = min(max_changed_slots, len(query_slot_names))
+    elif difficulty == "medium":
+        min_changed = 1
+        max_changed = min(max_changed_slots, len(query_slot_names))
+    else:  # hard
+        min_changed = 2 if len(query_slot_names) >= 2 else 1
+        max_changed = min(max_changed_slots, len(query_slot_names))
+
+    if max_changed < min_changed:
+        min_changed = max_changed
+
+    candidate_dicts = [deepcopy(true_option)]
+    seen_texts = {render_candidate(domain, true_option)}
+    max_attempts = 200
+    attempts = 0
+
+    while len(candidate_dicts) < num_candidates and attempts < max_attempts:
+        attempts += 1
         cand = deepcopy(true_option)
 
-        num_changed = random.randint(1, min(max_changed_slots, len(query_slot_names)))
+        num_changed = random.randint(min_changed, max_changed)
         slots_to_change = random.sample(query_slot_names, k=num_changed)
 
         for slot in slots_to_change:
-            cand[slot] = random.choice(wrong_slots[slot])
+            new_value = random.choice(wrong_slots[slot])
+            cand[slot] = new_value
 
-        if cand not in candidates:
-            candidates.append(cand)
+        text = render_candidate(domain, cand)
 
-    random.shuffle(candidates)
+        if text in seen_texts:
+            continue
 
-    candidate_texts = [render_candidate(domain, c) for c in candidates]
-    correct_index = candidates.index(true_option)
+        seen_texts.add(text)
+        candidate_dicts.append(cand)
 
-    return candidate_texts, correct_index
+    if len(candidate_dicts) < num_candidates:
+        return [], -1
+
+    candidate_texts = [render_candidate(domain, c) for c in candidate_dicts]
+
+    indexed = list(enumerate(candidate_texts))
+    random.shuffle(indexed)
+
+    shuffled_candidate_texts = [x[1] for x in indexed]
+    correct_index = next(i for i, (orig_idx, _) in enumerate(indexed) if orig_idx == 0)
+
+    return shuffled_candidate_texts, correct_index
 
 def load_dialogues_from_split(split_dir):
     all_dialogues = []
@@ -689,21 +929,52 @@ def load_dialogues_from_split(split_dir):
     return all_dialogues
 
 def main():
-    split = "train"
-    split_dir = os.path.join(BASE_DIR, split)
-    dialogues = load_dialogues_from_split(split_dir)
+    for split in SPLITS:
+        split_dir = os.path.join(BASE_DIR, split)
+        dialogues = load_dialogues_from_split(split_dir)
 
-    data = []
-    for i, dialog in enumerate(dialogues[:100]): 
-        sample = generate_sample(dialog, num_distractors=3, sample_id=f"ex_{i:04d}")
-        if sample is not None:
-            data.append(sample)
+        print("split_dir =", split_dir)
+        print("num dialogues loaded =", len(dialogues))
 
-    output_path = os.path.join(OUTPUT_BASE, f"{split}_debug.json")
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+        data = []
+        skip_invalid_domain = 0
+        skip_empty_gold_state = 0
+        skip_other = 0
 
-    print(f"saved {len(data)} samples to {output_path}")
+        for i, dialog in enumerate(dialogues):
+            difficulty = random.choice(["easy", "medium", "hard"])
+
+            if difficulty == "easy":
+                num_distractors = 1
+            elif difficulty == "medium":
+                num_distractors = 3
+            else:
+                num_distractors = 6
+
+            sample = generate_sample(
+                dialog=dialog,
+                sample_id=f"ex_{i:06d}",
+                num_distractors=num_distractors,
+                difficulty=difficulty,
+                debug=False
+            )
+
+            if sample is not None:
+                data.append(sample)
+            else:
+                skip_other += 1
+
+        split_output_dir = os.path.join(OUTPUT_BASE, split)
+        os.makedirs(split_output_dir, exist_ok=True)
+
+        output_path = os.path.join(split_output_dir, f"{split}.json")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+        print(f"saved {len(data)} samples to {output_path}")
+        print(f"skip_invalid_domain = {skip_invalid_domain}")
+        print(f"skip_empty_gold_state = {skip_empty_gold_state}")
+        print(f"skip_other = {skip_other}")
 
 if __name__ == "__main__":
     main()
