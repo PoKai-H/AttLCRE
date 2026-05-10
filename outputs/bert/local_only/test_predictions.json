@@ -1,0 +1,2052 @@
+[
+  {
+    "sample_id": "hard_9102b8",
+    "pred_index": 1,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the south.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.322717666625977,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.88076114654541,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.857730388641357,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.149523735046387,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "cheap",
+      "wrong_area": "south",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_b50c89",
+    "pred_index": 2,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.132500648498535,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.069149017333984,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.4913330078125,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.099117755889893,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_9b6772",
+    "pred_index": 3,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.1065826416015625,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.064247131347656,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.110648155212402,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.205230712890625,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_eeb812",
+    "pred_index": 1,
+    "gold_index": 1,
+    "correct": 1,
+    "predicted_candidate": "You should choose a expensive restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.149131774902344,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 5.241029739379883,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.149615287780762,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.57080078125,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "expensive",
+      "wrong_area": "east",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_e20a08",
+    "pred_index": 3,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.084211349487305,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.443803787231445,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.140183448791504,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.934877395629883,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 11,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_cfdadf",
+    "pred_index": 3,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the east.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.67753267288208,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.131827354431152,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.89619779586792,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.683083534240723,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "cheap",
+      "wrong_area": "east",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_2ceab2",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.85840368270874,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.076646327972412,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.732397556304932,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.1138434410095215,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "cheap",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_11f373",
+    "pred_index": 2,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.860464572906494,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.086562633514404,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.342034339904785,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.274764060974121,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "centre",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_33c6c2",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a expensive restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.12783145904541,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.7457475662231445,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.2207489013671875,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.1312971115112305,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "expensive",
+      "wrong_area": "south",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_c657de",
+    "pred_index": 3,
+    "gold_index": 1,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.157698154449463,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 3.6171960830688477,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.313718795776367,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.3399434089660645,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "moderate",
+      "wrong_area": "centre",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_ae9dbb",
+    "pred_index": 3,
+    "gold_index": 3,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.751246929168701,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.141054153442383,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.776989936828613,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.349431037902832,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "cheap",
+      "wrong_area": "west",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_8d5e3b",
+    "pred_index": 3,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the east.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.1280412673950195,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.155242443084717,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.456053256988525,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.706297874450684,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "east",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_47b681",
+    "pred_index": 2,
+    "gold_index": 1,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.069149017333984,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.104381084442139,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.949195861816406,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.132500648498535,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_33b69b",
+    "pred_index": 2,
+    "gold_index": 1,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.151877403259277,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.159994125366211,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.8891448974609375,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.12872314453125,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_7e156c",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the east.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.850593566894531,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.100849628448486,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.5169851779937744,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 3.568725347518921,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "east",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_47c7e6",
+    "pred_index": 0,
+    "gold_index": 0,
+    "correct": 1,
+    "predicted_candidate": "You should choose a moderate restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.437223434448242,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.115324974060059,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.12506103515625,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.0941853523254395,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "south",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_59a664",
+    "pred_index": 1,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.107300281524658,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.849300861358643,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.046970844268799,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.228578090667725,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "west",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_535256",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.720229148864746,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.137114524841309,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.135623931884766,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.1169915199279785,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "expensive",
+      "wrong_area": "west",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_c92c3c",
+    "pred_index": 1,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.138980388641357,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 3.938878297805786,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.3512938022613525,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.125575065612793,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_3bf066",
+    "pred_index": 2,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.144356727600098,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 5.23762321472168,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.335233688354492,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.138485908508301,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "expensive",
+      "wrong_area": "centre",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_95af09",
+    "pred_index": 3,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 5.221746444702148,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.133788108825684,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.8961639404296875,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.311971664428711,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "centre",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_ba86d9",
+    "pred_index": 3,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the south.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.093322277069092,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.093906402587891,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.082465171813965,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.091062545776367,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "expensive",
+      "wrong_area": "south",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_2dfb76",
+    "pred_index": 1,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.128301620483398,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.825984001159668,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.108525276184082,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.122977256774902,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_08cc6c",
+    "pred_index": 3,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.125333309173584,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.083721160888672,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.8493473529815674,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.266824245452881,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_e288cc",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the south.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.718388080596924,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.120517253875732,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.6292247772216797,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 3.4978067874908447,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "moderate",
+      "wrong_area": "south",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_5cb105",
+    "pred_index": 3,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.110302925109863,
+        "candidate_text": "You should choose a expensive restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.143944263458252,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.1200714111328125,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.823393821716309,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "expensive",
+      "wrong_area": "west",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_0b3e35",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 5.335174560546875,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      },
+      {
+        "candidate_index": 1,
+        "score": 5.258053779602051,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.137643814086914,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.157930374145508,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "expensive",
+      "wrong_area": "centre",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_862ab0",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a moderate restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.116079330444336,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.1331024169921875,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.332228660583496,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.096455097198486,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_7b9f87",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 5.011133193969727,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.327689170837402,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.367525100708008,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.10841178894043,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "cheap",
+      "wrong_area": "west",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_bc1c29",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a moderate restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.892322063446045,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.124895095825195,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.046436786651611,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.125058174133301,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "moderate",
+      "wrong_area": "east",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_248657",
+    "pred_index": 1,
+    "gold_index": 1,
+    "correct": 1,
+    "predicted_candidate": "You should choose a expensive restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.127330303192139,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 5.274178981781006,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.117011070251465,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.235639572143555,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "expensive",
+      "wrong_area": "east",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_db4b0c",
+    "pred_index": 1,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.9159934520721436,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.97166633605957,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.364492416381836,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.103280067443848,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_d218f9",
+    "pred_index": 3,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.09946870803833,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.115931987762451,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.068521499633789,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.180464744567871,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "expensive",
+      "wrong_area": "west",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_6faa3d",
+    "pred_index": 1,
+    "gold_index": 1,
+    "correct": 1,
+    "predicted_candidate": "You should choose a moderate restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.74946665763855,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 1,
+        "score": 3.840562343597412,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.108612537384033,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.104697227478027,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "moderate",
+      "wrong_area": "east",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_65c57e",
+    "pred_index": 2,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 3.9449779987335205,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.128823280334473,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.811896800994873,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.796520233154297,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "cheap",
+      "wrong_area": "west",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_08d321",
+    "pred_index": 1,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.132500648498535,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.949195861816406,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.069149017333984,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.900275230407715,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "cheap",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_52ba63",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a expensive restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.798049449920654,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.107540130615234,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 5.248846054077148,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.050361633300781,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "expensive",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 6,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_26a5bd",
+    "pred_index": 0,
+    "gold_index": 0,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.821252822875977,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.14286994934082,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.656692028045654,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.1345038414001465,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "cheap",
+      "wrong_area": "west",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_32cc0c",
+    "pred_index": 1,
+    "gold_index": 1,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.802906036376953,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.884194374084473,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.143064975738525,
+        "candidate_text": "You should choose a expensive restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.138980388641357,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "cheap",
+      "wrong_area": "west",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_158d6f",
+    "pred_index": 1,
+    "gold_index": 0,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.744592189788818,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.852438926696777,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.830303907394409,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.1010637283325195,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "cheap",
+      "wrong_area": "north",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_b1d1bc",
+    "pred_index": 2,
+    "gold_index": 2,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.136318206787109,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.805115699768066,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.814063549041748,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 3.78265380859375,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "west",
+      "true_price": "cheap",
+      "wrong_area": "south",
+      "wrong_price": "moderate",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 10,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_0333e7",
+    "pred_index": 1,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.5225324630737305,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.979374885559082,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.117005348205566,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.237851142883301,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_d0fe4c",
+    "pred_index": 0,
+    "gold_index": 0,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the south.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.784516334533691,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.138788223266602,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.746532440185547,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.100116729736328,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "cheap",
+      "wrong_area": "east",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 11,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_5ccebe",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.844428539276123,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.456053256988525,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.1280412673950195,
+        "candidate_text": "You should choose a moderate restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": -5.155242443084717,
+        "candidate_text": "There is not enough information."
+      }
+    ],
+    "metadata": {
+      "true_area": "east",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_7c8bc1",
+    "pred_index": 1,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the west.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.0969557762146,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.962801933288574,
+        "candidate_text": "You should choose a cheap restaurant in the west."
+      },
+      {
+        "candidate_index": 2,
+        "score": 3.6730008125305176,
+        "candidate_text": "You should choose a moderate restaurant in the west."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.07103157043457,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "west",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 7,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_ba54dc",
+    "pred_index": 0,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a moderate restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 5.333388328552246,
+        "candidate_text": "You should choose a moderate restaurant in the centre."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.111605644226074,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.299129962921143,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.252593040466309,
+        "candidate_text": "You should choose a expensive restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "centre",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_b80cda",
+    "pred_index": 3,
+    "gold_index": 2,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the north.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": 4.404038429260254,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": -5.0965776443481445,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.019789218902588,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.054134368896484,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "south",
+      "true_price": "moderate",
+      "wrong_area": "north",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_7571c5",
+    "pred_index": 2,
+    "gold_index": 3,
+    "correct": 0,
+    "predicted_candidate": "You should choose a cheap restaurant in the south.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.10999870300293,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.087043762207031,
+        "candidate_text": "You should choose a moderate restaurant in the south."
+      },
+      {
+        "candidate_index": 2,
+        "score": 4.877635478973389,
+        "candidate_text": "You should choose a cheap restaurant in the south."
+      },
+      {
+        "candidate_index": 3,
+        "score": 4.487995147705078,
+        "candidate_text": "You should choose a moderate restaurant in the north."
+      }
+    ],
+    "metadata": {
+      "true_area": "north",
+      "true_price": "moderate",
+      "wrong_area": "south",
+      "wrong_price": "cheap",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 8,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_28dad8",
+    "pred_index": 3,
+    "gold_index": 3,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.064247131347656,
+        "candidate_text": "You should choose a expensive restaurant in the north."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.824951171875,
+        "candidate_text": "You should choose a cheap restaurant in the north."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.110648155212402,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.342712879180908,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "cheap",
+      "wrong_area": "north",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  },
+  {
+    "sample_id": "hard_98bd03",
+    "pred_index": 3,
+    "gold_index": 3,
+    "correct": 1,
+    "predicted_candidate": "You should choose a cheap restaurant in the centre.",
+    "scores_by_candidate": [
+      {
+        "candidate_index": 0,
+        "score": -5.125295639038086,
+        "candidate_text": "There is not enough information."
+      },
+      {
+        "candidate_index": 1,
+        "score": 4.819357395172119,
+        "candidate_text": "You should choose a cheap restaurant in the east."
+      },
+      {
+        "candidate_index": 2,
+        "score": -5.126213073730469,
+        "candidate_text": "You should choose a expensive restaurant in the east."
+      },
+      {
+        "candidate_index": 3,
+        "score": 5.361393451690674,
+        "candidate_text": "You should choose a cheap restaurant in the centre."
+      }
+    ],
+    "metadata": {
+      "true_area": "centre",
+      "true_price": "cheap",
+      "wrong_area": "east",
+      "wrong_price": "expensive",
+      "difficulty": "hard",
+      "signal_position": 0,
+      "distractor_position": 9,
+      "num_turns": 3,
+      "has_distractor": true,
+      "ablation": "local_only"
+    }
+  }
+]
