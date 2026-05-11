@@ -5,16 +5,51 @@ from typing import Any
 import torch
 from torch.utils.data import Dataset
 
+BIAS_STOP_TOKENS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "at",
+    "be",
+    "best",
+    "choose",
+    "for",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "option",
+    "should",
+    "suitable",
+    "the",
+    "to",
+    "you",
+}
+
+
 class RankingDataset(Dataset):
     """
     Candidate-level dataset for binary ranking.
     Each item corresponds to (context, candidate, lebel)
     """
 
-    def __init__(self, rows: list[dict[str, Any]], tokenizer, max_length: int) -> None:
+    def __init__(
+        self,
+        rows: list[dict[str, Any]],
+        tokenizer,
+        max_length: int,
+        num_mem_tokens=0,
+        use_memory=False,
+        use_attention_bias=False,
+    ) -> None:
         self.rows = rows
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.num_mem_tokens = num_mem_tokens
+        self.use_memory = use_memory
+        self.use_attention_bias = use_attention_bias
 
     def __len__(self) -> int:
         return len(self.rows)
@@ -22,10 +57,18 @@ class RankingDataset(Dataset):
     def __getitem__(self, idx: int) -> dict[str, Any]:
         row = self.rows[idx]
 
+        context = row["context"]
+        candidate = row["candidate"]
+        label = row["label"]
+        
+        if self.use_memory:
+            mem_prefix = " ".join(["[MEM]"] * self.num_mem_tokens)
+            context = f"{mem_prefix} {context}"
+            
         encoded = self.tokenizer(
-            row["context"],
-            row["candidate"],
-            truncation=True,
+            context,
+            candidate,
+            truncation="only_first", 
             padding="max_length",
             max_length=self.max_length,
             return_tensors="pt",
@@ -55,11 +98,45 @@ class RankingDataset(Dataset):
         else:
             item["token_type_ids"] = torch.zeros_like(item["input_ids"])
 
+        if self.use_attention_bias:
+            item["attention_bias"] = self._build_attention_bias(
+                input_ids=item["input_ids"],
+                token_type_ids=item["token_type_ids"],
+                candidate=candidate,
+            )
+
         return item
+
+    def _build_attention_bias(
+        self,
+        input_ids: torch.Tensor,
+        token_type_ids: torch.Tensor,
+        candidate: str,
+    ) -> torch.Tensor:
+        candidate_ids = self.tokenizer(
+            candidate,
+            add_special_tokens=False,
+            return_attention_mask=False,
+        )["input_ids"]
+        candidate_ids = {
+            token_id
+            for token_id in candidate_ids
+            if token_id not in self.tokenizer.all_special_ids
+            and self.tokenizer.convert_ids_to_tokens(token_id).lower() not in BIAS_STOP_TOKENS
+        }
+
+        bias = torch.zeros_like(input_ids, dtype=torch.float)
+        for idx, token_id in enumerate(input_ids.tolist()):
+            is_context_token = token_type_ids[idx].item() == 0
+            is_candidate_overlap = token_id in candidate_ids
+            is_special_token = token_id in self.tokenizer.all_special_ids
+            if is_context_token and is_candidate_overlap and not is_special_token:
+                bias[idx] = 1.0
+        return bias
 
 # stacking samples into batch
 def collate_fn(batch: list[dict[str, Any]]) -> dict[str, Any]:
-    return {
+    collated = {
         "input_ids": torch.stack([x["input_ids"] for x in batch]),
         "attention_mask": torch.stack([x["attention_mask"] for x in batch]),
         "token_type_ids": torch.stack([x["token_type_ids"] for x in batch]),
@@ -70,3 +147,6 @@ def collate_fn(batch: list[dict[str, Any]]) -> dict[str, Any]:
         "metadata": [x["metadata"] for x in batch],
         "candidate_text": [x["candidate_text"] for x in batch],
     }
+    if "attention_bias" in batch[0]:
+        collated["attention_bias"] = torch.stack([x["attention_bias"] for x in batch])
+    return collated

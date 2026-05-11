@@ -9,7 +9,8 @@ from transformers import (
     LongformerTokenizer
 )
 
-
+from src.attnBiasBert import AttnBiasBert
+from src.memBert import MemBert
 
 class OutputWrapper:
     """
@@ -30,7 +31,7 @@ def build_model_and_tokenizer(model_name: str):
             "bert-base-uncased",
             num_labels = 2
         )
-        max_length = 256
+        max_length = 512 # change from 256 to 512 for fair comparison with MemBert
 
     elif model_name == "longformer":
         tokenizer = LongformerTokenizer.from_predtrained("allenai/longformer-base-4096")
@@ -39,6 +40,27 @@ def build_model_and_tokenizer(model_name: str):
             num_labels = 2
         )
         max_length = 1024
+
+    elif model_name == "bert_mem":
+        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+        special_tokens = {"additional_special_tokens": ["[MEM]"]}
+
+        tokenizer.add_special_tokens(special_tokens)
+
+        model = MemBert(model_name="bert-base-uncased", num_labels=2, num_mem_tokens=4)
+        model.mem_token_id = tokenizer.convert_tokens_to_ids("[MEM]")
+        model.bert.resize_token_embeddings(len(tokenizer))
+
+        max_length = 512
+
+    elif model_name == "bert_attn_bias":
+        tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+        model = AttnBiasBert(
+            model_name="bert-base-uncased",
+            num_labels=2,
+            bias_strength=1.0,
+        )
+        max_length = 512
     
     else:
         raise NotImplementedError

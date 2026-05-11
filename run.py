@@ -37,11 +37,11 @@ def save_json(path: str, data) -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer"])
-    parser.add_argument("--train_path", type=str, default="data/datadata/multiwoz_generator/train/train.json")
-    parser.add_argument("--val_path", type=str, default="data/datadata/multiwoz_generator/dev/dev.json")
-    parser.add_argument("--test_path", type=str, default="data/datadata/multiwoz_generator/test/test.json")
-    parser.add_argument("--output_dir", type=str, default="data/outputs")
+    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer", "bert_mem", "bert_attn_bias"])
+    parser.add_argument("--train_path", type=str, default="new_data2/train.json")
+    parser.add_argument("--val_path", type=str, default="new_data2/val.json")
+    parser.add_argument("--test_path", type=str, default="new_data2/test.json")
+    parser.add_argument("--output_dir", type=str, default="new_data2/outputs")
     parser.add_argument("--train_batch_size", type=int, default=8)
     parser.add_argument("--eval_batch_size", type=int, default=16)
     parser.add_argument("--num_epochs", type=int, default=3)
@@ -98,9 +98,34 @@ def main():
     model, tokenizer, max_length = build_model_and_tokenizer(args.model)
     model.to(device)
 
-    train_dataset = RankingDataset(train_rows, tokenizer, max_length=max_length)
-    val_dataset = RankingDataset(val_rows, tokenizer, max_length=max_length)
-    test_dataset = RankingDataset(test_rows, tokenizer, max_length=max_length)
+    use_memory = args.model == "bert_mem"
+    use_attention_bias = args.model == "bert_attn_bias"
+    num_mem_tokens = 4
+
+    train_dataset = RankingDataset(
+        train_rows,
+        tokenizer,
+        max_length=max_length,
+        num_mem_tokens=num_mem_tokens,
+        use_memory=use_memory,
+        use_attention_bias=use_attention_bias,
+    )
+    val_dataset = RankingDataset(
+        val_rows,
+        tokenizer,
+        max_length=max_length,
+        num_mem_tokens=num_mem_tokens,
+        use_memory=use_memory,
+        use_attention_bias=use_attention_bias,
+    )
+    test_dataset = RankingDataset(
+        test_rows,
+        tokenizer,
+        max_length=max_length,
+        num_mem_tokens=num_mem_tokens,
+        use_memory=use_memory,
+        use_attention_bias=use_attention_bias,
+    )
 
     train_loader = DataLoader(
         train_dataset,
@@ -122,7 +147,11 @@ def main():
     )
 
     print(f"Model: {args.model}")
+    print(f"Device: {device}")
+    print(f"Max length: {max_length}")
     print(f"Train rows: {len(train_rows)} | Val rows: {len(val_rows)} | Test rows: {len(test_rows)}")
+    print(f"Train batches: {len(train_loader)} | Val batches: {len(val_loader)} | Test batches: {len(test_loader)}")
+    print(f"Train batch size: {args.train_batch_size} | Eval batch size: {args.eval_batch_size}")
 
     model = run_training(
         model=model,

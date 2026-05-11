@@ -29,7 +29,7 @@ def save_json(path: str, data) -> None:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer", "small_transformer"])
+    parser.add_argument("--model", type=str, required=True, choices=["bert", "longformer", "bert_mem", "bert_attn_bias"])
     parser.add_argument("--test_path", type=str, required=True)
     parser.add_argument("--checkpoint_path", type=str, required=True)
     parser.add_argument("--output_dir", type=str, default="outputs_test_only")
@@ -78,7 +78,14 @@ def main():
     model.load_state_dict(torch.load(args.checkpoint_path, map_location=device))
     model.to(device)
 
-    test_dataset = RankingDataset(test_rows, tokenizer, max_length=max_length)
+    test_dataset = RankingDataset(
+        test_rows,
+        tokenizer,
+        max_length=max_length,
+        num_mem_tokens=4,
+        use_memory=args.model == "bert_mem",
+        use_attention_bias=args.model == "bert_attn_bias",
+    )
     test_loader = DataLoader(
         test_dataset,
         batch_size=args.eval_batch_size,

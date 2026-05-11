@@ -16,12 +16,21 @@ def collect_candidate_scores(model, dataloader, device: str) -> list[dict[str, A
         input_ids = batch["input_ids"].to(device)
         attention_mask = batch["attention_mask"].to(device)
         token_type_ids = batch["token_type_ids"].to(device)
+        attention_bias = batch.get("attention_bias")
+        if attention_bias is not None:
+            attention_bias = attention_bias.to(device)
 
-        outputs = model(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            token_type_ids=token_type_ids,
-        )
+        model_inputs = {
+            "input_ids": input_ids,
+            "attention_mask": attention_mask,
+            "token_type_ids": token_type_ids,
+        }
+        if hasattr(model, "mem_token_id"):
+            model_inputs["mem_token_id"] = model.mem_token_id
+        if attention_bias is not None:
+            model_inputs["attention_bias"] = attention_bias
+
+        outputs = model(**model_inputs)
 
         logits = outputs.logits
         positive_scores = logits[:, 1].detach().cpu().tolist()
