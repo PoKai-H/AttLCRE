@@ -54,55 +54,23 @@ This means all evidence from the dialogue and candidate must be compressed into 
 
 For `bert_mem`, we prepend \(k\) memory tokens to the context:
 
-$$
-\tilde{X}
-=
-[\texttt{[CLS]}, m_1, \dots, m_k, c_1, \dots, c_m, \texttt{[SEP]}, a_1, \dots, a_n, \texttt{[SEP]}].
-$$
+$$\tilde{X}=[\texttt{[CLS]}, m_1, \dots, m_k, c_1, \dots c_m, \texttt{[SEP]}, a_1, \dots, a_n, \texttt{[SEP]}].$$
 
 Because the memory tokens participate in normal self-attention, each memory state can aggregate information from the full visible input:
 
-$$
-h_{m_i}^{(\ell+1)}
-=
-\sum_{j=1}^{|\tilde{X}|}
-\alpha_{ij}^{(\ell)} W_V h_j^{(\ell)},
-$$
+$$h_{m_i}^{(\ell+1)}=\sum_{j=1}^{|\tilde{X}|}\alpha_{ij}^{(\ell)} W_V h_j^{(\ell)},$$
 
 where
 
-$$
-\alpha_{ij}^{(\ell)}
-=
-\mathrm{softmax}_j
-\left(
-\frac{
-(W_Q h_i^{(\ell)})^\top (W_K h_j^{(\ell)})
-}{
-\sqrt{d}
-}
-\right).
-$$
+$$\alpha_{ij}^{(\ell)}=\mathrm{softmax}_j\left(\frac{(W_Q h_i^{(\ell)})^\top (W_K h_j^{(\ell)})}{\sqrt{d}}\right).$$
 
 Instead of classifying from `[CLS]` alone, the implementation averages the memory-token states and concatenates them with `[CLS]`:
 
-$$
-\bar{m}
-=
-\frac{1}{k}\sum_{i=1}^k h_{m_i},
-\qquad
-z
-=
-[h_{\texttt{[CLS]}} ; \bar{m}],
-$$
+$$\bar{m}=\frac{1}{k}\sum_{i=1}^k h_{m_i},\qquad z=[h_{\texttt{[CLS]}} ; \bar{m}],$$
 
 then predicts:
 
-$$
-\hat{y}
-=
-\mathrm{softmax}(Wz + b).
-$$
+$$\hat{y}=\mathrm{softmax}(Wz + b).$$
 
 In the current implementation, \(k=4\). This tests whether additional trainable aggregation slots improve sparse evidence retrieval.
 
@@ -110,60 +78,24 @@ In the current implementation, \(k=4\). This tests whether additional trainable 
 
 Standard self-attention computes attention logits:
 
-$$
-e_{ij}
-=
-\frac{
-q_i^\top k_j
-}{
-\sqrt{d}
-}.
-$$
+$$e_{ij}=\frac{q_i^\top k_j}{\sqrt{d}}.$$
 
 The attention-biased variant adds a bias term before the softmax:
 
-$$
-e_{ij}
-=
-\frac{
-q_i^\top k_j
-}{
-\sqrt{d}
-}
-+
-B_{ij}.
-$$
+$$e_{ij}=\frac{q_i^\top k_j}{\sqrt{d}}+B_{ij}.$$
 
 Then attention weights become:
 
-$$
-\alpha_{ij}
-=
-\frac{
-\exp(e_{ij})
-}{
-\sum_t \exp(e_{it})
-}.
-$$
+$$\alpha_{ij}=\frac{\exp(e_{ij})}{\sum_t \exp(e_{it})}.$$
 
 In the implementation, the bias is candidate-conditioned and token-position based. Let \(S(a)\) be the set of non-stopword candidate token ids. For a context token position \(j\):
 
-$$
-b_j
-=
-\begin{cases}
-1, & x_j \in S(a) \text{ and } x_j \text{ is a context token}, \\
-0, & \text{otherwise}.
-\end{cases}
-$$
+$$b_j=\begin{cases}1, & x_j \in S(a) \text{ and } x_j \text{ is a context token}, \\
+0, & \text{otherwise}.\end{cases}$$
 
 This vector is broadcast across query positions and attention heads:
 
-$$
-B_{ij}
-=
-\lambda b_j,
-$$
+$$B_{ij}=\lambda b_j,$$
 
 where \(\lambda\) is the bias strength. The current implementation uses \(\lambda = 1.0\). This does not directly reveal the correct answer, but it encourages attention toward context tokens that lexically overlap with the candidate.
 
