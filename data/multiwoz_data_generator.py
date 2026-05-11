@@ -5,27 +5,13 @@ import re
 import uuid
 from copy import deepcopy
 
-BASE_DIR = "/Users/reeseliu/Desktop/Linear attention/multiwoz/data/MultiWOZ_2.2"
+BASE_DIR = "/Users/reeseliu/Desktop/DL report history/Linear attention/multiwoz/data/MultiWOZ_2.2"
 SPLITS = ["train", "dev", "test"]
 OUTPUT_BASE = "multiwoz_generator"
 ALLOWED_DOMAINS = {"hotel", "restaurant", "train"}
 random.seed(42)
 os.makedirs(OUTPUT_BASE, exist_ok=True)
 
-# DOMAIN_SLOT_SCHEMA = {
-#     "restaurant": {
-#         "categorical": ["pricerange", "area", "bookday", "bookpeople"],
-#         "non_categorical": ["food", "name", "booktime", "address", "phone", "postcode", "ref"],
-#     },
-#     "hotel": {
-#         "categorical": ["pricerange", "parking", "internet", "stars", "area", "type", "bookpeople", "bookday", "bookstay"],
-#         "non_categorical": ["name", "address", "phone", "postcode", "ref"],
-#     },
-#     "train": {
-#         "categorical": ["destination", "departure", "day", "bookpeople"],
-#         "non_categorical": ["arriveby", "leaveat", "trainid", "ref", "price", "duration"],
-#     },
-# }
 
 WRONG_VALUE_BANK = {
     "restaurant": {
@@ -83,6 +69,8 @@ QUERY_BANK = {
     ],
 }
 
+#Get possible wrong values for a specific slot in a specific domain from WRONG_VALUE_BANK
+#removes any value that is the same as the true value, so the wrong candidates will not accidentally include the correct answer.
 def get_wrong_values_for_slot(domain: str, slot: str, true_value: str) -> list[str]:
     candidates = WRONG_VALUE_BANK.get(domain, {}).get(slot, [])
     true_value = normalize_value(true_value)
@@ -95,6 +83,8 @@ def get_wrong_values_for_slot(domain: str, slot: str, true_value: str) -> list[s
 
     return wrong_values
 
+#Sample utterances from the original dialogue that do not contain slot state information and use them as noise.
+#make the synthetic dialogue more realistic and harder.
 def sample_noise_from_dialog(dialog, k=3):
     turns = dialog.get("turns", [])
     blocks = []
@@ -137,6 +127,7 @@ def sample_noise_from_dialog(dialog, k=3):
     return blocks[:k]
 
 #determines the domain of a dialogue.
+#First checks the dialogue-level services field. If valid domains are found, it randomly selects one. If not, it searches through each turn’s frames to find a valid service.
 def get_domain_from_dialog(dialog):
     services = dialog.get("services", [])
     found = [str(s).lower() for s in services if str(s).lower() in ALLOWED_DOMAINS]
@@ -161,7 +152,7 @@ def get_domain_from_dialog(dialog):
 
     return None
 
-#normalizes a slot value
+#Normalize slot values so that later comparisons are consistent.
 def normalize_value(v):
     if v is None:
         return None
@@ -170,6 +161,8 @@ def normalize_value(v):
         return None
     return v
 
+#Extract the correct slot values for a given domain from the dialogue. This is called the gold state.
+#Create the correct candidate answer or build the signal information.
 def extract_gold_state(dialog, domain):
     gold_state = {}
     allowed_slots = QUERYABLE_SLOTS[domain]
@@ -212,6 +205,7 @@ def extract_gold_state(dialog, domain):
 
     return gold_state
 
+#Arrange signal blocks, noise blocks, distractor blocks, and query turns into a synthetic dialogue while controlling the distance between the signal and the query.
 def arrange_blocks_with_random_distance(
     signal_blocks,
     noise_blocks,
@@ -245,6 +239,8 @@ def arrange_blocks_with_random_distance(
 
     return dialogue_blocks
 
+#Generate one complete synthetic retrieval sample from an original MultiWOZ dialogue.
+#domain, gold state, signal dialogue, distractor dialogue, noise dialogue, query, answer candidates, correct answer index, signal-query distance
 def generate_sample(
     dialog: dict,
     sample_id: str,
@@ -417,6 +413,8 @@ def generate_sample(
 
     return sample
 
+#Randomly generate a query sentence based on the domain.
+#If the domain has a predefined QUERY_BANK, it randomly selects a query from it. Otherwise, it uses a general fallback query.
 def generate_query(domain: str) -> str:
     if domain in QUERY_BANK:
         return random.choice(QUERY_BANK[domain])
@@ -427,7 +425,7 @@ def generate_query(domain: str) -> str:
         "Given what I said before, which option is best?",
     ])
 
-#turn each important constraint in true_slots into a dialogue block.
+#Convert each important constraint in true_slots into a dialogue block.
 def generate_signal_pairs(
     domain: str,
     true_slots: dict[str, str],
@@ -441,6 +439,7 @@ def generate_signal_pairs(
 
     return signals
 
+#Convert one slot-value pair into a two-turn dialogue pair.
 def render_signal_pair(
     domain: str,
     slot: str,
@@ -466,6 +465,7 @@ def render_signal_pair(
     ]
 
 #return the full list of signal blocks
+#Render a slot-value pair into a natural-language user utterance based on the domain.
 def render_slot_signal(domain: str, slot: str, value: str) -> str:
 
     templates = {
@@ -565,6 +565,7 @@ def render_slot_signal(domain: str, slot: str, value: str) -> str:
 
     return f"My preference is {slot} = {value}."
 
+#Generate the assistant’s reply to the user’s constraint.
 def render_reply(domain: str, slot: str, value: str, level: int) -> str:
 
     """
@@ -673,6 +674,7 @@ def render_reply(domain: str, slot: str, value: str, level: int) -> str:
             return random.choice(slot_templates)
         return random.choice(weak)
 
+#Generate the assistant’s reply to the user’s constraint:hard negatives and irrelevant
 def build_distractor_pool(
     domain: str,
     full_values: dict[str, str],
@@ -701,6 +703,7 @@ def build_distractor_pool(
 
     return pool
 
+#Decide how explicit the assistant’s reply should be based on difficulty.
 def sample_reply_level(difficulty: str = "medium") -> int:
     if difficulty == "easy":
         return random.choice([1, 2, 2])
@@ -751,6 +754,7 @@ def generate_distractor_pairs(
 
     return blocks
 
+#Render a candidate option, which is a slot-value dictionary, into natural-language text.
 def render_candidate(domain: str, option: dict[str, str]) -> str:
     intro_templates = [
         "The best match is",
@@ -824,6 +828,7 @@ def render_candidate(domain: str, option: dict[str, str]) -> str:
     else:
         return f"{intro} an option with constraints: {option}."
 
+#Build multiple-choice answer candidates, where one option is correct and the others are similar but wrong.
 def build_candidates(
     domain: str,
     full_values: dict[str, str],
@@ -896,6 +901,7 @@ def build_candidates(
 
     return shuffled_candidate_texts, correct_index
 
+#Load all JSON dialogue files from a split folder, such as train / dev / test.
 def load_dialogues_from_split(split_dir):
     all_dialogues = []
 
