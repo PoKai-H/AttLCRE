@@ -4,8 +4,6 @@
 __pycache__/
 *.pyc
 
-data_experiment/experiment_output/
-new_data2/outputs/
-data/outputs/.DS_Store
+.DS_Store
 *.pyc
 *.pt*.pt
