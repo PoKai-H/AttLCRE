@@ -3,85 +3,82 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 
-OUTPUT_BASE = "experiment_outputs"
+OUTPUT_BASE = "data_experiment/experiment_output"
+
 MODELS = ["bert", "longformer"]
 DISTANCES = [20, 50, 100, 200]
 DENSITIES = [1, 5, 10, 20]
 SEEDS = [1, 2, 3]
 
 
-def find_accuracy(result_dir):
-    possible_files = [
-        "metrics.json",
-        "result.json",
-        "results.json",
-        "test_results.json",
-        "eval_results.json"
-    ]
+def read_accuracy(result_dir):
+    pred_path = os.path.join(result_dir, "test_predictions.json")
 
-    for file in possible_files:
-        path = os.path.join(result_dir, file)
-        if os.path.exists(path):
-            with open(path, "r") as f:
-                data = json.load(f)
+    if not os.path.exists(pred_path):
+        raise FileNotFoundError(f"No test_predictions.json found in {result_dir}")
 
-            for key in ["accuracy", "acc", "test_accuracy"]:
-                if key in data:
-                    return data[key]
+    with open(pred_path, "r") as f:
+        data = json.load(f)
 
-    raise FileNotFoundError(f"No accuracy file found in {result_dir}")
+    if len(data) == 0:
+        raise ValueError(f"Empty test_predictions.json in {result_dir}")
 
+    correct = sum(item["correct"] for item in data)
+    total = len(data)
 
-all_rows = []
+    return correct / total
+
 
 for model in MODELS:
     rows = []
 
     for d in DISTANCES:
         for den in DENSITIES:
-            accs = []
-
-            for s in SEEDS:
-                result_dir = f"{OUTPUT_BASE}/{model}/d{d}_den{den}_seed{s}"
+            for seed in SEEDS:
+                result_dir = f"{OUTPUT_BASE}/{model}/d{d}_den{den}_seed{seed}"
 
                 try:
-                    acc = find_accuracy(result_dir)
-                    accs.append(acc)
+                    acc = read_accuracy(result_dir)
 
                     rows.append({
                         "model": model,
                         "distance": d,
                         "density": den,
-                        "seed": s,
-                        "accuracy": acc
+                        "seed": seed,
+                        "accuracy": acc,
                     })
 
+                    print(f"Loaded: {model}, d={d}, den={den}, seed={seed}, acc={acc:.4f}")
+
                 except Exception as e:
-                    print(f"Missing result: model={model}, d={d}, den={den}, seed={s}")
+                    print(f"Missing result: {model}, d={d}, den={den}, seed={seed}")
                     print(e)
 
-            if accs:
-                all_rows.append({
-                    "model": model,
-                    "distance": d,
-                    "density": den,
-                    "mean_accuracy": sum(accs) / len(accs),
-                    "std_accuracy": pd.Series(accs).std()
-                })
-
     df = pd.DataFrame(rows)
-    df.to_csv(f"{OUTPUT_BASE}/{model}_grid_results.csv", index=False)
 
-    mean_df = (
+    model_output_dir = f"{OUTPUT_BASE}/{model}"
+    os.makedirs(model_output_dir, exist_ok=True)
+
+    csv_path = f"{model_output_dir}/{model}_grid_results.csv"
+    df.to_csv(csv_path, index=False)
+
+    if df.empty:
+        print(f"No valid results found for {model}. Skip summary and heatmap.")
+        continue
+
+    summary = (
         df.groupby(["distance", "density"])["accuracy"]
-        .mean()
+        .agg(["mean", "std"])
         .reset_index()
     )
 
-    heatmap_data = mean_df.pivot(
+    summary_path = f"{model_output_dir}/{model}_grid_summary.csv"
+    summary.to_csv(summary_path, index=False)
+
+    heatmap_data = summary.pivot(
         index="distance",
         columns="density",
-        values="accuracy"
+        values="mean"
     )
 
     plt.figure(figsize=(7, 5))
@@ -93,52 +90,20 @@ for model in MODELS:
 
     plt.xlabel("Distractor Density")
     plt.ylabel("Signal-Query Distance")
-    plt.title(f"{model.upper()} Accuracy Heatmap")
+    plt.title(f"{model.upper()} 4x4 Grid Accuracy Heatmap")
 
-    for i, d in enumerate(heatmap_data.index):
-        for j, den in enumerate(heatmap_data.columns):
-            value = heatmap_data.loc[d, den]
+    for i, distance in enumerate(heatmap_data.index):
+        for j, density in enumerate(heatmap_data.columns):
+            value = heatmap_data.loc[distance, density]
             plt.text(j, i, f"{value:.2f}", ha="center", va="center")
 
     plt.tight_layout()
-    plt.savefig(f"{OUTPUT_BASE}/{model}_heatmap.png", dpi=300)
+
+    heatmap_path = f"{model_output_dir}/{model}_heatmap.png"
+    plt.savefig(heatmap_path, dpi=300)
     plt.close()
 
-
-summary_df = pd.DataFrame(all_rows)
-summary_df.to_csv(f"{OUTPUT_BASE}/comparison_results.csv", index=False)
-
-compare = summary_df.pivot_table(
-    index=["distance", "density"],
-    columns="model",
-    values="mean_accuracy"
-).reset_index()
-
-compare["bert_minus_longformer"] = compare["bert"] - compare["longformer"]
-compare.to_csv(f"{OUTPUT_BASE}/comparison_results.csv", index=False)
-
-heatmap_compare = compare.pivot(
-    index="distance",
-    columns="density",
-    values="bert_minus_longformer"
-)
-
-plt.figure(figsize=(7, 5))
-plt.imshow(heatmap_compare, aspect="auto")
-plt.colorbar(label="BERT - Longformer Accuracy")
-
-plt.xticks(range(len(heatmap_compare.columns)), heatmap_compare.columns)
-plt.yticks(range(len(heatmap_compare.index)), heatmap_compare.index)
-
-plt.xlabel("Distractor Density")
-plt.ylabel("Signal-Query Distance")
-plt.title("BERT vs Longformer Accuracy Difference")
-
-for i, d in enumerate(heatmap_compare.index):
-    for j, den in enumerate(heatmap_compare.columns):
-        value = heatmap_compare.loc[d, den]
-        plt.text(j, i, f"{value:.2f}", ha="center", va="center")
-
-plt.tight_layout()
-plt.savefig(f"{OUTPUT_BASE}/comparison_heatmap.png", dpi=300)
-plt.close()
+    print(f"Saved results for {model}")
+    print(f"CSV: {csv_path}")
+    print(f"Summary: {summary_path}")
+    print(f"Heatmap: {heatmap_path}")

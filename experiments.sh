@@ -1,29 +1,40 @@
 #!/bin/bash
 
 GRID_BASE="data_experiment/multiwoz_generator_experiment/grid"
-OUTPUT_BASE="experiment_outputs"
+OUTPUT_BASE="data_experiment/experiment_output"
 
-mkdir -p ${OUTPUT_BASE}
+BERT_CKPT="data_experiment/bert/best_model.pt"
+LONGFORMER_CKPT="data_experiment/longformer/best_model.pt"
 
-declare -A CHECKPOINTS
-CHECKPOINTS[bert]="data/outputs_experiment/bert/best_model.pt"
-CHECKPOINTS[longformer]="data/outputs_experiment/longformer/best_model.pt"
-
-for model in bert longformer
+#for model in bert longformer
+for model in longformer
 do
-  for d in 20 50 100 200
+  if [ "$model" = "bert" ]; then
+    CHECKPOINT=$BERT_CKPT
+  elif [ "$model" = "longformer" ]; then
+    CHECKPOINT=$LONGFORMER_CKPT
+  fi
+
+  if [ ! -f "$CHECKPOINT" ]; then
+    echo "Checkpoint not found for $model: $CHECKPOINT"
+    continue
+  fi
+
+  mkdir -p ${OUTPUT_BASE}/${model}
+
+  for d in 50 100 200
   do
     for den in 1 5 10 20
     do
-      for s in 1 2 3
+      for seed in 1 2 3
       do
-        echo "Running model=$model distance=$d density=$den seed=$s"
+        echo "Running $model | distance=$d | density=$den | seed=$seed"
 
         python3 run_test_only.py \
           --model ${model} \
-          --test_path ${GRID_BASE}/d${d}_den${den}_seed${s}/test.json \
-          --checkpoint_path ${CHECKPOINTS[$model]} \
-          --output_dir ${OUTPUT_BASE}/${model}/d${d}_den${den}_seed${s} \
+          --test_path ${GRID_BASE}/d${d}_den${den}_seed${seed}/test.json \
+          --checkpoint_path ${CHECKPOINT} \
+          --output_dir ${OUTPUT_BASE}/${model}/d${d}_den${den}_seed${seed} \
           --render_mode full \
           --include_speaker
       done

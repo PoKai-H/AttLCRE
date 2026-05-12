@@ -34,7 +34,7 @@ def build_model_and_tokenizer(model_name: str):
         max_length = 512 # change from 256 to 512 for fair comparison with MemBert
 
     elif model_name == "longformer":
-        tokenizer = LongformerTokenizer.from_predtrained("allenai/longformer-base-4096")
+        tokenizer = LongformerTokenizer.from_pretrained("allenai/longformer-base-4096")
         model = LongformerForSequenceClassification.from_pretrained(
             "allenai/longformer-base-4096",
             num_labels = 2
